@@ -13,11 +13,10 @@ interface Inputs {
 }
 
 const Home: NextPage = () => {
+  const { register, handleSubmit } = useForm<Inputs>();
+
   const { mutate: createCandidate, isLoading } =
     api.candidate.create.useMutation();
-
-  const register = () => {};
-  const handleSubmit = () => {};
 
   const { data: candidates } = api.candidate.getAll.useQuery();
 
@@ -39,15 +38,24 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="flex h-screen w-screen flex-col items-center justify-center bg-zinc-50 bg-zinc-600">
-        <form className="flex flex-col gap-2">
+        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-2">
           <label>First Name</label>
-          <input type="text" />
+          <input
+            type="text"
+            {...register("firstName", { required: "A first name is required" })}
+          />
           <label>Last Name</label>
-          <input type="text" />
+          <input
+            type="text"
+            {...register("lastName", { required: "A first name is required" })}
+          />
           <label>Email</label>
-          <input type="text" />
+          <input
+            type="text"
+            {...register("email", { required: "A first name is required" })}
+          />
           <label>Gender</label>
-          <select>
+          <select {...register("gender")}>
             {Object.values(Gender).map((g) => (
               <option key={g} value={g}>
                 {g}
